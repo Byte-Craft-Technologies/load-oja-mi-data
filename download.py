@@ -7,22 +7,16 @@ from googleapiclient.http import MediaIoBaseDownload
 
 
 def download_excel():
-    # Chemin vers ton fichier credentials.json
-    SERVICE_ACCOUNT_FILE = 'credentials.json'
+    SERVICE_ACCOUNT_FILE = os.environ["SERVICE_ACCOUNT_FILE"]
 
-    # Portée de l'API
     SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 
-    # Créer les informations d'identification
     creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
-    # Construire le service Drive
     drive_service = build('drive', 'v3', credentials=creds)
 
-    # ID de la feuille Google Sheets (extrait de l'URL)
     FILE_ID = '1rv-xu_lc7DqE4fzpygTWSz2zGfu7E0JIv-siaRFxdew'
 
-    # Exporter le fichier Google Sheet au format Excel
     request = drive_service.files().export_media(
         fileId=FILE_ID,
         mimeType='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

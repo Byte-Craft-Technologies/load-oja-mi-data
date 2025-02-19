@@ -1,10 +1,14 @@
+import persist_category
+import persist_product
+import persist_variation
 from download import download_excel
-from persist_category import read_excel_sheet
 
 
 def main():
     download_excel()
-    read_excel_sheet()
+    persist_category.save()
+    persist_product.save()
+    persist_variation.save()
     
 if __name__ == "__main__":
     main()

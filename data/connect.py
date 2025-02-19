@@ -1,19 +1,20 @@
-import psycopg2
+import os
+import psycopg2.pool
+
+_pool = psycopg2.pool.SimpleConnectionPool(
+    minconn=1,
+    maxconn=5,
+    host=os.environ["DB_HOST"],
+    port=os.environ["DB_PORT"],
+    database=os.environ["DB_NAME"],
+    user=os.environ["DB_USER"],
+    password=os.environ["DB_PASSWORD"],
+)
 
 
-def connect_to_db():
-    try:
-        # Define connection parameters
-        connection = psycopg2.connect(
-            host="localhost",
-            port="5432",
-            database="oja_mi_db",
-            user="postgres",
-            password="root"
-        )
-        print("Connection successful")
-        return connection
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return None
-   
+def get_connection():
+    return _pool.getconn()
+
+
+def release_connection(conn):
+    _pool.putconn(conn)
